@@ -32,6 +32,7 @@
   "dependencies": {
     "@sunny-cli/get-npm-info": "file:../../utils/get-npm-info/",
     "@sunny-cli/log": "file:../../utils/log/",
+    "minimist": "^1.2.7",
     "root-check": "^1.0.0",
     "semver": "^7.3.8"
   }
