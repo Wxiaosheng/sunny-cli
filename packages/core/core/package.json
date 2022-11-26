@@ -5,9 +5,9 @@
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
   "license": "ISC",
-  "main": "lib/index.js",
+  "main": "bin/index.js",
   "bin": {
-    "sunny-cli": "lib/index.js"
+    "sunny-cli": "bin/index.js"
   },
   "directories": {
     "lib": "lib",
@@ -28,5 +28,9 @@
   },
   "bugs": {
     "url": "https://github.com/Wxiaosheng/sunny-cli/issues"
+  },
+  "dependencies": {
+    "semver": "^7.3.8",
+    "@sunny-cli/log": "file:../../utils/log/"
   }
 }
