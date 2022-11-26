@@ -4,8 +4,13 @@ const log = require('@sunny-cli/log')
 const pkg = require('../package.json')
 const CONST = require('./const')
 
-const checkCliVersion = () => {
+const checkCliVersion = async () => {
   console.log('cli version', pkg.version)
+  const { getLatestVersion } = require('@sunny-cli/get-npm-info')
+  const latestVersion = await getLatestVersion(pkg.name)
+  if (latestVersion && semver.lt(pkg.version, latestVersion)) {
+    log.notice(`您当前 cli 的版本过低，可升级到 v${latestVersion} 体验最新版！`)
+  }
 }
 
 const checkNodeVersion = () => {
@@ -39,9 +44,9 @@ const checkInputArgv = () => {
 }
 
 // 1、执行准备
-const preExce = () => {
+const preExce = async () => {
   try {
-    checkCliVersion()
+    await checkCliVersion()
     checkNodeVersion()
     checkUserHome()
     checkRoot()

@@ -30,6 +30,7 @@
     "url": "https://github.com/Wxiaosheng/sunny-cli/issues"
   },
   "dependencies": {
+    "@sunny-cli/get-npm-info": "file:../../utils/get-npm-info/",
     "@sunny-cli/log": "file:../../utils/log/",
     "root-check": "^1.0.0",
     "semver": "^7.3.8"
