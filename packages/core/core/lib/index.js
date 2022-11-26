@@ -28,6 +28,16 @@ const checkRoot = () => {
   rootCheck()
 }
 
+const checkInputArgv = () => {
+  // 可开启 debug 模式
+  const minimist = require('minimist')
+  const argv = minimist(process.argv.slice(2))
+  if (argv.debug) {
+    log.level = 'verbose'
+    log.verbose('您已开启调试模式')
+  }
+}
+
 // 1、执行准备
 const preExce = () => {
   try {
@@ -35,6 +45,7 @@ const preExce = () => {
     checkNodeVersion()
     checkUserHome()
     checkRoot()
+    checkInputArgv()
   } catch (error) {
     log.error(error.message)
   }
