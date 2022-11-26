@@ -1,3 +1,4 @@
+const fs = require('fs')
 const semver = require('semver')
 const log = require('@sunny-cli/log')
 const pkg = require('../package.json')
@@ -14,11 +15,26 @@ const checkNodeVersion = () => {
   }
 }
 
+const checkUserHome = () => {
+  const os = require('os')
+  const userHome = os.homedir()
+  if (!userHome || !fs.existsSync(userHome)) {
+    throw new Error('无法访问当前用户主目录，请检查是否存在！')
+  }
+}
+
+const checkRoot = () => {
+  const rootCheck = require('root-check')
+  rootCheck()
+}
+
 // 1、执行准备
 const preExce = () => {
   try {
     checkCliVersion()
     checkNodeVersion()
+    checkUserHome()
+    checkRoot()
   } catch (error) {
     log.error(error.message)
   }

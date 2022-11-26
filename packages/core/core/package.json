@@ -30,7 +30,8 @@
     "url": "https://github.com/Wxiaosheng/sunny-cli/issues"
   },
   "dependencies": {
-    "semver": "^7.3.8",
-    "@sunny-cli/log": "file:../../utils/log/"
+    "@sunny-cli/log": "file:../../utils/log/",
+    "root-check": "^1.0.0",
+    "semver": "^7.3.8"
   }
 }
