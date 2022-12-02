@@ -1,11 +1,11 @@
 const fs = require('fs')
 const semver = require('semver')
 const log = require('@sunny-cli/log')
+const command = require('commander')
 const pkg = require('../package.json')
 const CONST = require('./const')
 
 const checkCliVersion = async () => {
-  console.log('cli version', pkg.version)
   const { getLatestVersion } = require('@sunny-cli/get-npm-info')
   const latestVersion = await getLatestVersion(pkg.name)
   if (latestVersion && semver.lt(pkg.version, latestVersion)) {
@@ -56,9 +56,45 @@ const preExce = async () => {
   }
 }
 
+// 2、注册命令
+const registerCommand = () => {
+  const program = new command.Command()
+
+  program
+    .name('sunny-cli')
+    .version(pkg.version)
+    .usage('command <command>')
+    .option('-d, --debug', '开启调试模式');
+  
+  program
+    .command('init <projectName>')
+    .option('-tp, --targetPath', '本地调试包文件路径')
+    .option('-f, --force', '强行覆盖当前文件夹', false)
+    .action(() => {
+      console.log('init')
+    });
+
+  program.on('option:debug', (...args) => {
+    console.log('option:debug', args, program)
+  });
+
+  program.on('command:*', (args) => {
+    log.error(`您输入的 ${
+      args.join(', ')
+    } 命令无法识别, 暂时仅支持 ${
+      program.commands.map(com => com.name())
+    }`)
+  });
+  
+  program.parse(process.argv);
+
+}
+
 const cli = () => {
   
   preExce()
+
+  registerCommand()
 
 }
 
