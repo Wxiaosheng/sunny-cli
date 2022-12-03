@@ -15,20 +15,55 @@
  * 
  */
 
+const cp = require('child_process')
 const log = require('@sunny-cli/log')
+const Package = require('@sunny-cli/package')
 
 const COMMAND_MAP = {
     'init': '@imooc-cli/init'
 }
 
 const exec = (projectName, options, comObj) => {
-    const cliName = COMMAND_MAP[comObj.name()]
-    console.log('exec', projectName, options, cliName)
-    const { targetPath } = options
-    if (targetPath) {
-        log.verbose('进入调试本地包流程')
-    } else {
-        log.verbose('进入加载远程包流程')
+    try {
+        const cliName = comObj.name()
+        const pkgName = COMMAND_MAP[cliName]
+        const { targetPath } = options
+        let pkg
+        if (targetPath) {
+            log.verbose('进入调试本地包流程')
+            pkg = new Package({
+                name: pkgName,
+                path: targetPath
+            })
+        } else {
+            log.verbose('进入加载远程包流程')
+        }
+        
+        const childArgv = Object.create(null)
+        Object.keys(comObj).forEach(key => {
+            if (
+                !key.startsWith('_') &&
+                key !== 'parent' && key !== 'options'
+            ) childArgv[key] = comObj[key]
+        })
+
+        // 生成指令
+        const code = `require('${pkg.getMainPath()}').call(null, ${JSON.stringify(childArgv)})`
+        // 多线程执行
+        const child = cp.spawn('node', ['-e', code], {
+            cwd: process.cwd(),
+            stdio: 'inherit'
+        })
+        child.on('error', e => {
+            log.error(e.message)
+            process.exit(1)
+        })
+        child.on('exit', e => {
+            log.verbose('命令执行成功：', e)
+            process.exit(1)
+        })
+    } catch (e) {
+        log.error(e.message)
     }
 }
 

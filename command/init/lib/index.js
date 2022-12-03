@@ -12,6 +12,6 @@ class InitCommand extends Command {
 
 module.exports.InitCommand = InitCommand
 
-module.exports = () => {
-    new InitCommand()
+module.exports = (args) => {
+    new InitCommand(args)
 }

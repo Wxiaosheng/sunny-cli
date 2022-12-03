@@ -1,15 +1,11 @@
 {
-  "name": "@sunny-cli/exec",
+  "name": "@sunny-cli/package",
   "version": "0.0.4",
-  "description": "动态执行命令",
+  "description": "> TODO: description",
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
   "license": "ISC",
   "main": "lib/index.js",
-  "dependencies": {
-    "@sunny-cli/log": "file:../../utils/log",
-    "@sunny-cli/package": "file:../../models/package"
-  },
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -29,5 +25,8 @@
   },
   "bugs": {
     "url": "https://github.com/Wxiaosheng/sunny-cli/issues"
+  },
+  "dependencies": {
+    "pkg-dir": "^5.0.0"
   }
 }
