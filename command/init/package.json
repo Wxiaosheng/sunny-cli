@@ -6,6 +6,9 @@
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
   "license": "ISC",
   "main": "lib/index.js",
+  "dependencies": {
+    "@sunny-cli/command": "file:../../models/command"
+  },
   "directories": {
     "lib": "lib",
     "test": "__tests__"

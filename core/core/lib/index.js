@@ -69,13 +69,9 @@ const registerCommand = () => {
   
   program
     .command('init <projectName>')
-    .option('-tp, --targetPath', '本地调试包文件路径')
+    .option('-tp, --targetPath <targetPath>', '本地调试包文件路径')
     .option('-f, --force', '强行覆盖当前文件夹', false)
     .action(exec);
-
-  program.on('option:targetPath', (...args) => {
-    console.log('option:targetPath', args, program)
-  });
 
   program.on('command:*', (args) => {
     log.error(`您输入的 ${
