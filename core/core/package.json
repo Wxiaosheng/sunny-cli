@@ -1,6 +1,6 @@
 {
   "name": "@sunny-cli/core",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "> TODO: description",
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
@@ -31,9 +31,9 @@
     "url": "https://github.com/Wxiaosheng/sunny-cli/issues"
   },
   "dependencies": {
+    "@sunny-cli/exec": "file:../exec/",
     "@sunny-cli/get-npm-info": "file:../../utils/get-npm-info/",
     "@sunny-cli/log": "file:../../utils/log/",
-    "@sunny-cli/exec": "file:../exec/",
     "commander": "^9.4.1",
     "minimist": "^1.2.7",
     "root-check": "^1.0.0",
