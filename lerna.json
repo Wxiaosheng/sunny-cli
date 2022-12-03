@@ -2,6 +2,8 @@
   "version": "0.0.4",
   "packages": [
     "core/*",
-    "utils/*"
+    "utils/*",
+    "command/*",
+    "models/*"
   ]
 }
