@@ -2,6 +2,7 @@ const fs = require('fs')
 const semver = require('semver')
 const log = require('@sunny-cli/log')
 const command = require('commander')
+const exec = require('@sunny-cli/exec')
 const pkg = require('../package.json')
 const CONST = require('./const')
 
@@ -70,12 +71,10 @@ const registerCommand = () => {
     .command('init <projectName>')
     .option('-tp, --targetPath', '本地调试包文件路径')
     .option('-f, --force', '强行覆盖当前文件夹', false)
-    .action(() => {
-      console.log('init')
-    });
+    .action(exec);
 
-  program.on('option:debug', (...args) => {
-    console.log('option:debug', args, program)
+  program.on('option:targetPath', (...args) => {
+    console.log('option:targetPath', args, program)
   });
 
   program.on('command:*', (args) => {

@@ -33,6 +33,7 @@
   "dependencies": {
     "@sunny-cli/get-npm-info": "file:../../utils/get-npm-info/",
     "@sunny-cli/log": "file:../../utils/log/",
+    "@sunny-cli/exec": "file:../exec/",
     "commander": "^9.4.1",
     "minimist": "^1.2.7",
     "root-check": "^1.0.0",

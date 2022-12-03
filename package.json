@@ -1,7 +1,7 @@
 {
   "name": "sunny-cli",
   "private": true,
-  "devDependencies": {
-    "lerna": "^6.0.3"
+  "dependencies": {
+    "lerna": "^6.1.0"
   }
 }
