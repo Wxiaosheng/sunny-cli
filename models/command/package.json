@@ -1,6 +1,6 @@
 {
   "name": "@sunny-cli/command",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "sunny-cli 命令基类，处理命令的相似逻辑",
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
