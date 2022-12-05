@@ -1,15 +1,15 @@
 {
   "name": "@sunny-cli/exec",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "动态执行命令",
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
   "license": "ISC",
   "main": "lib/index.js",
   "dependencies": {
+    "@sunny-cli/get-npm-info": "file:../../utils/get-npm-info",
     "@sunny-cli/log": "file:../../utils/log",
-    "@sunny-cli/package": "file:../../models/package",
-    "@sunny-cli/get-npm-info": "file:../../utils/get-npm-info"
+    "@sunny-cli/package": "file:../../models/package"
   },
   "directories": {
     "lib": "lib",
