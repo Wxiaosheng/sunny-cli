@@ -1,13 +1,29 @@
+const fs = require('fs')
 const path = require('path')
+const npminstall = require('npminstall')
+const { getLatestVersion } = require('@sunny-cli/get-npm-info')
 
 class Package {
-    constructor(otps) {
-        if (!otps.name) throw new Error('Package 必须出入 name')
-        this.name = otps.name
+    constructor(opts) {
+        if (!opts.name) throw new Error('Package 必须出入 name')
+        this.name = opts?.name
+        this.cechedPrefix = this.name.replace('/', '_')
+        this.version = opts?.version || 'latest'
 
-        if (otps.path) {
-            this.path = this.normalPath(otps.path)
+        if (opts.path) {
+            this.path = this.normalPath(opts.path)
+            const info = this.getPkgInfo()
+            this.version = info.version
+        } else {
+            this.path = this.getCachedPath()
         }
+
+    }
+
+    static cacheDir = '.sunny-cli/dependencies'
+
+    static get cachePath () {
+        return path.resolve(process.env.CLI_USER_HOME, Package.cacheDir)
     }
 
     normalPath (path) {
@@ -32,6 +48,26 @@ class Package {
         return path.resolve(this.path, info?.main || info?.lib)
     }
 
+    isCached () {
+        const cachePath = this.getCachedPath()
+        return fs.existsSync(cachePath)
+    }
+
+    getCachedPath () {
+        // @imooc-cli => _@imooc-cli_init@1.1.3@@imooc-cli
+        const cacheName = `node_modules/_${this.cechedPrefix}@${this.version}@${this.name}`
+        return path.resolve(Package.cachePath, cacheName)
+    }
+
+    async install () {
+        await npminstall({
+            root: Package.cachePath,
+            pkgs: [{
+                name: this.name,
+                version: this.version
+            }]
+        })
+    }
 
 }
 

@@ -27,6 +27,7 @@ const checkUserHome = () => {
   if (!userHome || !fs.existsSync(userHome)) {
     throw new Error('无法访问当前用户主目录，请检查是否存在！')
   }
+  process.env.CLI_USER_HOME = userHome
 }
 
 const checkRoot = () => {
@@ -65,7 +66,8 @@ const registerCommand = () => {
     .name('sunny-cli')
     .version(pkg.version)
     .usage('command <command>')
-    .option('-d, --debug', '开启调试模式');
+    .option('-d, --debug', '开启调试模式')
+    .on('option:debug', (debug) => process.env.CLI_DEBUG = debug);
   
   program
     .command('init <projectName>')
@@ -85,9 +87,9 @@ const registerCommand = () => {
 
 }
 
-const cli = () => {
+const cli = async () => {
   
-  preExce()
+  await preExce()
 
   registerCommand()
 

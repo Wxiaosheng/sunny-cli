@@ -20,5 +20,6 @@ const getLatestVersion = async (pkgName, register) => {
 }
 
 module.exports = {
+    getNpmInfo,
     getLatestVersion
 }

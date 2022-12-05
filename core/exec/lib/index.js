@@ -18,12 +18,13 @@
 const cp = require('child_process')
 const log = require('@sunny-cli/log')
 const Package = require('@sunny-cli/package')
+const { getLatestVersion } = require('@sunny-cli/get-npm-info')
 
 const COMMAND_MAP = {
-    'init': '@imooc-cli/init'
+    'init': '@sunny-cli/init'
 }
 
-const exec = (projectName, options, comObj) => {
+const exec = async (projectName, options, comObj) => {
     try {
         const cliName = comObj.name()
         const pkgName = COMMAND_MAP[cliName]
@@ -37,6 +38,14 @@ const exec = (projectName, options, comObj) => {
             })
         } else {
             log.verbose('进入加载远程包流程')
+            const latestVersion = await getLatestVersion(pkgName)
+            pkg = new Package({ 
+                name: pkgName,
+                version: latestVersion
+            })
+            if (!pkg.isCached()) {
+                await pkg.install()
+            }
         }
         
         const childArgv = Object.create(null)
@@ -49,6 +58,7 @@ const exec = (projectName, options, comObj) => {
 
         // 生成指令
         const code = `require('${pkg.getMainPath()}').call(null, ${JSON.stringify(childArgv)})`
+        console.log(code)
         // 多线程执行
         const child = cp.spawn('node', ['-e', code], {
             cwd: process.cwd(),
@@ -64,6 +74,9 @@ const exec = (projectName, options, comObj) => {
         })
     } catch (e) {
         log.error(e.message)
+        if (process.env.CLI_DEBUG) {
+            console.log(e)
+        }
     }
 }
 
