@@ -57,8 +57,8 @@ const exec = async (projectName, options, comObj) => {
         })
 
         // 生成指令
-        const code = `require('${pkg.getMainPath()}').call(null, ${JSON.stringify(childArgv)})`
-        console.log(code)
+        const code = `require('${pkg.getMainPath()}').call(null, ${JSON.stringify({...childArgv, ...options})})`
+        log.verbose(code)
         // 多线程执行
         const child = cp.spawn('node', ['-e', code], {
             cwd: process.cwd(),

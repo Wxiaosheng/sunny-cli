@@ -1,17 +1,11 @@
 {
-  "name": "@sunny-cli/init",
+  "name": "@sunny-cli/utils",
   "version": "0.0.6",
-  "description": "sunny-cli init command",
+  "description": "> TODO: description",
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
   "license": "ISC",
   "main": "lib/index.js",
-  "dependencies": {
-    "@sunny-cli/command": "file:../../models/command",
-    "@sunny-cli/utils": "file:../../utils/utils",
-    "fs-extra": "^11.1.0",
-    "inquirer": "^7.3.3"
-  },
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -19,15 +13,12 @@
   "files": [
     "lib"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Wxiaosheng/sunny-cli.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@sunny-cli/index.test.js"
+    "test": "node ./__tests__/index.test.js"
   },
   "bugs": {
     "url": "https://github.com/Wxiaosheng/sunny-cli/issues"

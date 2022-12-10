@@ -1,6 +1,16 @@
 class Command {
     constructor(otps) {
-        console.log('constructor', otps)
+
+        const runner = new Promise(() => {
+            let chain = Promise.resolve()
+            chain = chain.then(() => this.initArgs(otps))
+            chain = chain.then(() => this.init())
+            chain = chain.then(() => this.exec())
+        })
+    }
+
+    initArgs (otps) {
+        this._args = otps.args
     }
 
     init () {
