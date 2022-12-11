@@ -3,6 +3,7 @@ const semver = require('semver')
 const fse = require('fs-extra')
 const log = require('@sunny-cli/log')
 const Command = require('@sunny-cli/command')
+const request = require('@sunny-cli/request')
 const { isEmptyDir } = require('@sunny-cli/utils')
 const { TYPE_PROJECT, TYPE_COMPONENT } = require('./constant')
 
@@ -13,6 +14,15 @@ class InitCommand extends Command {
     }
 
     async prepare () {
+        // 选择模板
+        const templates = await this.getProjectTemplate()
+        const { template } = await inquirer.prompt([{
+            type: 'list',
+            name: 'template',
+            choices: templates,
+            message: '请选择模板：',
+        }])
+
         // 1、判断当前文件夹是否为空
         if (!isEmptyDir(this.localPath)) {
             const { force } = await inquirer.prompt([{
@@ -83,9 +93,18 @@ class InitCommand extends Command {
         } else if (projectType === TYPE_COMPONENT) {
             questions.push()
         }
-        
         const info = await inquirer.prompt(questions)
-        console.log('info', info)
+        this.projectInfo = info
+
+        console.log({
+            ...info,
+            // force,
+            template
+        })
+    }
+
+    downTemplate () {
+
     }
 
     async exec () {
@@ -93,6 +112,13 @@ class InitCommand extends Command {
         this.prepare()
         // 2、下载模板
         // 3、安装模板
+        this.downTemplate()
+    }
+
+    // 获取项目模板列表
+    async getProjectTemplate () {
+        const list = await request.get('/getProjectTemplate')
+        return list
     }
 }
 

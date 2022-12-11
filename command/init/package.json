@@ -10,6 +10,7 @@
     "@sunny-cli/command": "file:../../models/command",
     "@sunny-cli/log": "file:../../utils/log",
     "@sunny-cli/utils": "file:../../utils/utils",
+    "@sunny-cli/request": "file:../../utils/request",
     "fs-extra": "^11.1.0",
     "inquirer": "^7.3.3",
     "semver": "^7.3.8"
