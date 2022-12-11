@@ -1,6 +1,6 @@
 {
   "name": "@sunny-cli/mongodb",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "mongdb action library",
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
