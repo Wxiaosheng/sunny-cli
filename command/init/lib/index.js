@@ -14,15 +14,6 @@ class InitCommand extends Command {
     }
 
     async prepare () {
-        // 选择模板
-        const templates = await this.getProjectTemplate()
-        const { template } = await inquirer.prompt([{
-            type: 'list',
-            name: 'template',
-            choices: templates,
-            message: '请选择模板：',
-        }])
-
         // 1、判断当前文件夹是否为空
         if (!isEmptyDir(this.localPath)) {
             const { force } = await inquirer.prompt([{
@@ -31,9 +22,12 @@ class InitCommand extends Command {
                 message: '当前文件夹不为空，是否继续？',
                 default: false
             }])
-            // if (force) {
-            //     fse.emptyDirSync(this.localPath)
-            // }
+            this.force = force
+            if (force) {
+                fse.emptyDirSync(this.localPath)
+            } else {
+                return
+            }
         }
         // 2、是否启动强制更新
         // 3、获取用户初始化信息
@@ -50,13 +44,14 @@ class InitCommand extends Command {
             }
         ])
         log.verbose('您已选择创建 ', projectType)
-        let questions
-        if (projectType === TYPE_PROJECT) {
-            questions = [{
+
+        const typeText = projectType === TYPE_PROJECT ? '项目' : '组件'
+        const questions = [
+            {
                 type: 'input',
                 name: 'projectName',
                 default: '',
-                message: '请输入要创建的项目名称：',
+                message: `请输入要创建的${typeText}名称：`,
                 validate: function(v) {
                     // 1、首字符 必须为英文字符
                     // 2、尾字符 必须为英文或数字，不能为字符
@@ -69,15 +64,13 @@ class InitCommand extends Command {
                         }
                         done(null, true);
                     }, 0);
-                },
-                filter: (v) => {
-                    return v
                 }
-            },{
+            },
+            {
                 type: 'input',
                 name: 'projectVersion',
                 default: '',
-                message: '请输入要创建的项目版本号：',
+                message: `请输入要创建的${typeText}版本号：`,
                 validate: function (v) {
                     const done = this.async();
                     setTimeout(function() {
@@ -89,18 +82,43 @@ class InitCommand extends Command {
                     }, 0);
                     return 
                 }
-            }]
-        } else if (projectType === TYPE_COMPONENT) {
-            questions.push()
+            }
+        ]
+        if (projectType === TYPE_COMPONENT) {
+            questions.push({
+                type: 'input',
+                name: 'descriptions',
+                default: '',
+                message: '请输入组件描述信息：',
+                validate: function(v) {
+                    // 不能为空
+                    const done = this.async();
+                    setTimeout(function() {
+                        if (v?.trim()?.length < 1) {
+                            done('组件描述信息不能为空！！！');
+                            return;
+                        }
+                        done(null, true);
+                    }, 0);
+                },
+            })
         }
         const info = await inquirer.prompt(questions)
-        this.projectInfo = info
 
-        console.log({
-            ...info,
-            // force,
-            template
+        // 选择模板
+        const templates = await this.getTemplates(projectType)
+        const { template } = await inquirer.prompt({
+            type: 'list',
+            name: 'template',
+            choices: templates,
+            message: `请选择${typeText}模板：`,
         })
+        const currentTmp = templates.find(tmp => tmp.value === template)
+
+        this.projectInfo = {
+            ...info,
+            ...currentTmp
+        }
     }
 
     downTemplate () {
@@ -109,16 +127,22 @@ class InitCommand extends Command {
 
     async exec () {
         // 1、准备阶段
-        this.prepare()
+        await this.prepare()
+        if (this.force) return
         // 2、下载模板
         // 3、安装模板
         this.downTemplate()
     }
 
-    // 获取项目模板列表
-    async getProjectTemplate () {
-        const list = await request.get('/getProjectTemplate')
-        return list
+    // 获取 项目/组件 模板列表
+    async getTemplates (type) {
+        const url = type === TYPE_PROJECT ? '/getProjectTemplates' : '/getComponentTemplates'
+        const list = await request.get(url)
+        return list.map(item => ({ 
+            ...item,
+            name: item.name, 
+            value: item.npmName 
+        }));
     }
 }
 
