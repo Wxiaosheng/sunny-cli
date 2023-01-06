@@ -72,6 +72,7 @@ const registerCommand = () => {
   program
     .command('init <projectName>')
     .option('-tp, --targetPath <targetPath>', '本地调试包文件路径')
+    .on('option:targetPath', (targetPath) => process.env.CLI_TARGET_PATH = targetPath)
     .option('-f, --force', '强行覆盖当前文件夹', false)
     .action(exec);
 

@@ -1,10 +1,12 @@
+const path = require('path')
 const inquirer = require('inquirer')
 const semver = require('semver')
 const fse = require('fs-extra')
 const log = require('@sunny-cli/log')
 const Command = require('@sunny-cli/command')
+const Package = require('@sunny-cli/package')
 const request = require('@sunny-cli/request')
-const { isEmptyDir } = require('@sunny-cli/utils')
+const { isEmptyDir, spawnOSSync } = require('@sunny-cli/utils')
 const { TYPE_PROJECT, TYPE_COMPONENT } = require('./constant')
 
 class InitCommand extends Command {
@@ -121,17 +123,53 @@ class InitCommand extends Command {
         }
     }
 
-    downTemplate () {
+    async downTemplate () {
+        const { npmName, npmVersion } = this.projectInfo
+        const homePath = process.env.CLI_USER_HOME
+        const targetPath = path.resolve(homePath, Package.cacheDir, 'template')
+        const storeDir = path.resolve(targetPath, 'node_modules')
+        const pkg = new Package({ // 远程模板包
+            name: npmName,
+            version: npmVersion,
+            targetPath,
+            storeDir
+        })
+        // 安装模板
+        pkg.install()
+        // 拷贝模板内容至当前目录
+        const templatePath = path.resolve(pkg.getCachedPath(), 'template')
+        fse.copySync(templatePath, process.cwd())
+    }
 
+    async start () {
+        const { installCommand, startCommand } = this.projectInfo
+        // 安装依赖
+        if (installCommand) {
+            const [command, ...args] = installCommand.split(' ')
+            await spawnOSSync(command, args, {
+                cwd: process.cwd(),
+                stdio: 'inherit'
+            })
+        }
+
+        // 启动服务
+        if (startCommand) {
+            const [command, ...args] = startCommand.split(' ')
+            await spawnOSSync(command, args, {
+                cwd: process.cwd(),
+                stdio: 'inherit'
+            })
+        }
     }
 
     async exec () {
         // 1、准备阶段
         await this.prepare()
-        if (this.force) return
-        // 2、下载模板
-        // 3、安装模板
-        this.downTemplate()
+        if (!this.force) return
+        // 2、下载/安装模板
+        await this.downTemplate()
+        // 3、安装启动
+        this.start()
     }
 
     // 获取 项目/组件 模板列表

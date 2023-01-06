@@ -11,6 +11,7 @@
     "@sunny-cli/log": "file:../../utils/log",
     "@sunny-cli/request": "file:../../utils/request",
     "@sunny-cli/utils": "file:../../utils/utils",
+    "@sunny-cli/package": "file:../../models/package",
     "fs-extra": "^11.1.0",
     "inquirer": "^7.3.3",
     "semver": "^7.3.8"

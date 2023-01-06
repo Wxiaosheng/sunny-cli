@@ -14,7 +14,7 @@
  *  通过多线程 加载远程包的执行
  * 
  */
-
+const path = require('path')
 const cp = require('child_process')
 const log = require('@sunny-cli/log')
 const Package = require('@sunny-cli/package')
@@ -28,20 +28,29 @@ const exec = async (projectName, options, comObj) => {
     try {
         const cliName = comObj.name()
         const pkgName = COMMAND_MAP[cliName]
-        const { targetPath } = options
-        let pkg
+        const pkgVersion = 'latest'
+        const homePath = process.env.CLI_USER_HOME
+        let targetPath = process.env.CLI_TARGET_PATH
+        let pkg, storeDir = ''
+
         if (targetPath) {
             log.verbose('进入调试本地包流程')
             pkg = new Package({
                 name: pkgName,
-                path: targetPath
+                version: pkgVersion,
+                targetPath,
             })
         } else {
             log.verbose('进入加载远程包流程')
+            // 远程包的targetpath 为缓存路径
+            targetPath = path.resolve(homePath, Package.cacheDir, 'dependencies');
+            storeDir = path.resolve(targetPath, 'node_modules')
             const latestVersion = await getLatestVersion(pkgName)
             pkg = new Package({ 
                 name: pkgName,
-                version: latestVersion
+                version: latestVersion,
+                targetPath,
+                storeDir
             })
             if (!pkg.isCached()) {
                 await pkg.install()
