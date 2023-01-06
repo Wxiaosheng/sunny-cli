@@ -1,6 +1,6 @@
 {
   "name": "@sunny-cli/init",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "sunny-cli init command",
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
@@ -9,9 +9,9 @@
   "dependencies": {
     "@sunny-cli/command": "file:../../models/command",
     "@sunny-cli/log": "file:../../utils/log",
+    "@sunny-cli/package": "file:../../models/package",
     "@sunny-cli/request": "file:../../utils/request",
     "@sunny-cli/utils": "file:../../utils/utils",
-    "@sunny-cli/package": "file:../../models/package",
     "fs-extra": "^11.1.0",
     "inquirer": "^7.3.3",
     "semver": "^7.3.8"
