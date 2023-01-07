@@ -1,7 +1,7 @@
 {
   "name": "@sunny-cli/core",
   "version": "0.8.2",
-  "description": "> TODO: description",
+  "description": "sunny-cli 脚手架核心库",
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
   "license": "ISC",
