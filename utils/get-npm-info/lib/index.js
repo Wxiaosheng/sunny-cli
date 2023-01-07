@@ -11,6 +11,8 @@ const getNpmInfo = (pkgName, register = DEFAULT_REGISTER) => {
             return response.data
         }
         return Promise.reject()
+    }).catch(error => {
+        return Promise.resolve(error)
     })
 }
 

@@ -142,8 +142,32 @@ class InitCommand extends Command {
         fse.copySync(templatePath, process.cwd())
     }
 
+    async ejsRender(options = {}) {
+        const glob = require('glob')
+        const ejs = require('ejs')
+        const filePaths = glob.sync('**', {
+            cwd: process.cwd(),
+            nodir: true,
+            ...options
+        })
+
+        filePaths.map(async (filePath) => {
+            const result = await ejs.renderFile(
+                filePath, 
+                this.projectInfo, 
+                { async: true }
+            )
+            fse.writeFileSync(filePath, result);
+        })
+        
+      }
+
     async start () {
-        const { installCommand, startCommand } = this.projectInfo
+        const { installCommand, startCommand, ignore = [] } = this.projectInfo
+        // ejs 渲染
+        const templateIgnore = ['**/node_modules/**', ...ignore];
+        await this.ejsRender({ ignore: templateIgnore });
+
         // 安装依赖
         if (installCommand) {
             const [command, ...args] = installCommand.split(' ')

@@ -12,7 +12,9 @@
     "@sunny-cli/package": "file:../../models/package",
     "@sunny-cli/request": "file:../../utils/request",
     "@sunny-cli/utils": "file:../../utils/utils",
+    "ejs": "^3.1.8",
     "fs-extra": "^11.1.0",
+    "glob": "^8.0.3",
     "inquirer": "^7.3.3",
     "semver": "^7.3.8"
   },

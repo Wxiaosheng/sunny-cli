@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const semver = require('semver')
 const npminstall = require('npminstall')
 const { getLatestVersion } = require('@sunny-cli/get-npm-info')
 const { isObject } = require('@sunny-cli/utils')
@@ -62,7 +63,16 @@ class Package {
         return path.resolve(this.targetPath, cacheName)
     }
 
+    async update () {
+        const latest = await getLatestVersion(this.name)
+        if (latest && semver.lt(this.version, latest)) {
+            this.version = latest
+        }
+    }
+
     async install () {
+        await this.update()
+
         await npminstall({
             root: this.targetPath,
             storeDir: this.storeDir,
