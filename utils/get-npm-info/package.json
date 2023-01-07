@@ -1,6 +1,6 @@
 {
   "name": "@sunny-cli/get-npm-info",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "@sunny-cli get npm info lib",
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
