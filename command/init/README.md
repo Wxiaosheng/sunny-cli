@@ -1,11 +1,5 @@
 # `@sunny-cli/init`
 
-> TODO: description
+> sunny-cli init 命令库
 
-## Usage
-
-```
-const init = require('@sunny-cli/init');
-
-// TODO: DEMONSTRATE API
-```
+根据 @sunny-cli 脚手架的整体架构设计，将 init 命令的实现抽离成单独的包
