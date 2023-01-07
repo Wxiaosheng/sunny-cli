@@ -28,6 +28,7 @@ class InitCommand extends Command {
             if (force) {
                 fse.emptyDirSync(this.localPath)
             } else {
+                log.error('您选择不覆盖当前路径，已退出初始化流程！！！')
                 return
             }
         }
@@ -135,7 +136,7 @@ class InitCommand extends Command {
             storeDir
         })
         // 安装模板
-        pkg.install()
+        await pkg.install()
         // 拷贝模板内容至当前目录
         const templatePath = path.resolve(pkg.getCachedPath(), 'template')
         fse.copySync(templatePath, process.cwd())
@@ -146,6 +147,8 @@ class InitCommand extends Command {
         // 安装依赖
         if (installCommand) {
             const [command, ...args] = installCommand.split(' ')
+            // 白名单校验
+            await this.validCommand(command)
             await spawnOSSync(command, args, {
                 cwd: process.cwd(),
                 stdio: 'inherit'
@@ -155,6 +158,8 @@ class InitCommand extends Command {
         // 启动服务
         if (startCommand) {
             const [command, ...args] = startCommand.split(' ')
+            // 白名单校验
+            await this.validCommand(command)
             await spawnOSSync(command, args, {
                 cwd: process.cwd(),
                 stdio: 'inherit'
@@ -165,7 +170,7 @@ class InitCommand extends Command {
     async exec () {
         // 1、准备阶段
         await this.prepare()
-        if (!this.force) return
+        if (this.force === false) return
         // 2、下载/安装模板
         await this.downTemplate()
         // 3、安装启动
@@ -181,6 +186,17 @@ class InitCommand extends Command {
             name: item.name, 
             value: item.npmName 
         }));
+    }
+
+    // 仅运行白名单命令
+    async validCommand (com) {
+        const list = await request.get('/getWhiteCommands')
+        const commands = list.map(item => item.command)
+        if (!commands.includes(com)) {
+            log.error(`您运行的命令 (${com}) 不正确，请检查后重试！！！（仅支持 ${commands.join('、')} 等命令）`)
+            return Promise.reject(false)
+        }
+        return Promise.resolve(true)
     }
 }
 
