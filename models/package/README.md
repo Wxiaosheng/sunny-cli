@@ -1,11 +1,5 @@
 # `@sunny-cli/package`
 
-> TODO: description
+> @sunny-cli npm 包类，封装操作 npm 的逻辑
 
-## Usage
-
-```
-const package = require('@sunny-cli/package');
-
-// TODO: DEMONSTRATE API
-```
+@sunny-cli 是一个 monorepo 的形式，必定会有很多操作 npm 的逻辑，通过 `@sunny-cli/package` 抽离出来

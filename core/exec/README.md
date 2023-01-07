@@ -1,11 +1,6 @@
 # `@sunny-cli/exec`
 
-> TODO: description
+> @sunny-cli 动态执行（命令）库
 
-## Usage
+@sunny-cli 脚手架用来 **`动态执行`** 对应的远程命令库
 
-```
-const exec = require('@sunny-cli/exec');
-
-// TODO: DEMONSTRATE API
-```

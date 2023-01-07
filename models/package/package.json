@@ -1,7 +1,7 @@
 {
   "name": "@sunny-cli/package",
   "version": "0.8.2",
-  "description": "> TODO: description",
+  "description": "@sunny-cli npm 包类，封装操作 npm 的逻辑",
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
   "license": "ISC",

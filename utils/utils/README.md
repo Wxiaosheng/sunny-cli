@@ -1,11 +1,5 @@
 # `utils`
 
-> TODO: description
+> @sunny-cli utils library
 
-## Usage
-
-```
-const utils = require('utils');
-
-// TODO: DEMONSTRATE API
-```
+@sunny-cli 的 工具库。

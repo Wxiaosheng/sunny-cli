@@ -1,7 +1,7 @@
 {
   "name": "@sunny-cli/utils",
   "version": "0.8.1",
-  "description": "> TODO: description",
+  "description": "@sunny-cli utils library",
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
   "license": "ISC",

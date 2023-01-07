@@ -1,7 +1,7 @@
 {
   "name": "@sunny-cli/exec",
   "version": "0.8.2",
-  "description": "动态执行命令",
+  "description": "@sunny-cli 动态执行（命令）库",
   "author": "xiaosheng <287915338@qq.com>",
   "homepage": "https://github.com/Wxiaosheng/sunny-cli#readme",
   "license": "ISC",

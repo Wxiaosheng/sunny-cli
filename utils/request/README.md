@@ -1,11 +1,5 @@
 # `@sunny-cli/request`
 
-> TODO: description
+> @sunny-cli mongdb action library
 
-## Usage
-
-```
-const request = require('@sunny-cli/request');
-
-// TODO: DEMONSTRATE API
-```
+@sunny-cli 的 请求库。
