@@ -49,8 +49,10 @@ class InitCommand extends Command {
         log.verbose('您已选择创建 ', projectType)
 
         const typeText = projectType === TYPE_PROJECT ? '项目' : '组件'
-        const questions = [
-            {
+        let questions = [], defaultInfo = {}        
+        // init 命令行未传入了name，则需用户输入 
+        if (!this.projectName) {
+            questions = [{
                 type: 'input',
                 name: 'projectName',
                 default: '',
@@ -85,8 +87,13 @@ class InitCommand extends Command {
                     }, 0);
                     return 
                 }
+            }]
+        } else {
+            defaultInfo = {
+                projectName: this.projectName,
+                projectVersion: '1.0.0'
             }
-        ]
+        }
         if (projectType === TYPE_COMPONENT) {
             questions.push({
                 type: 'input',
@@ -119,6 +126,7 @@ class InitCommand extends Command {
         const currentTmp = templates.find(tmp => tmp.value === template)
 
         this.projectInfo = {
+            ...defaultInfo,
             ...info,
             ...currentTmp
         }
