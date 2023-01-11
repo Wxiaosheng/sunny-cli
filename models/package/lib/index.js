@@ -3,7 +3,7 @@ const path = require('path')
 const semver = require('semver')
 const npminstall = require('npminstall')
 const { getLatestVersion } = require('@sunny-cli/get-npm-info')
-const { isObject } = require('@sunny-cli/utils')
+const { isObject, formatOSPath } = require('@sunny-cli/utils')
 
 class Package {
     constructor(opts) {
@@ -30,7 +30,7 @@ class Package {
         if (!rootPath) {
             throw new Error('本地调试地址错误，无对应的 npm 包')
         }
-        return rootPath
+        return formatOSPath(rootPath)
     }
 
     pkgPath () {
@@ -40,7 +40,7 @@ class Package {
         } else { // 本地包
             pkgPath = this.normalPath(this.targetPath)
         }
-        return pkgPath
+        return formatOSPath(pkgPath)
     }
 
     getPkgInfo () {
@@ -49,7 +49,7 @@ class Package {
 
     getMainPath () {
         const info = this.getPkgInfo()
-        return path.resolve(this.pkgPath(), info?.main || info?.lib)
+        return formatOSPath(path.resolve(this.pkgPath(), info?.main || info?.lib))
     }
 
     isCached () {
@@ -60,7 +60,7 @@ class Package {
     getCachedPath () {
         // @imooc-cli => _@imooc-cli_init@1.1.3@@imooc-cli
         const cacheName = `node_modules/_${this.cechedPrefix}@${this.version}@${this.name}`
-        return path.resolve(this.targetPath, cacheName)
+        return formatOSPath(path.resolve(this.targetPath, cacheName))
     }
 
     async update () {

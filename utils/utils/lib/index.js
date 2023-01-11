@@ -1,5 +1,6 @@
 const fs = require('fs')
 const cp = require('child_process')
+const path = require('path')
 
 const isEmptyDir = (path, ignore  = ['node_modules']) => {
     return fs.readdirSync(path)
@@ -26,9 +27,16 @@ const spawnOSSync = (command, args, options) => {
     })
 }
 
+const formatOSPath = (p) => {
+    if (typeof p !== 'string') return p
+    if (path.sep === '/') return p
+    return p.replace(/\\/g, '/')
+}
+
 module.exports = {
     isEmptyDir,
     isObject,
     spawnOS,
-    spawnOSSync
+    spawnOSSync,
+    formatOSPath
 }
